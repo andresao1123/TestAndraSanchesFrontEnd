@@ -1,0 +1,71 @@
+<style>
+  /* Optional: Add some styling to the form */
+  body {
+    background-color: #f8f9fa;
+  }
+  .custom-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+<div
+  class="container-fluid d-flex align-items-center justify-content-center"
+  style="min-height: 100vh; max-width: 1200px; margin: 0 auto"
+>
+  <div class="custom-form">
+    <div *ngIf="isLoaded; else loadingContent">
+      <h1 class="mb-4 text-center">
+        Historial de pagos del cliente {{ name }}
+      </h1>
+      <div class="table-responsive" style="max-height: 500px;">
+        <table class="table">
+          <thead class="table-primary">
+            <tr>
+              <th scope="col">Fecha</th>
+              <th scope="col">Numero autorización</th>
+              <th scope="col">Numero referencia</th>
+              <th scope="col">Descripción compra</th>
+              <th scope="col">Estado Transacción</th>
+              <th scope="col">Monto</th>
+              <th scope="col">Telefono del cliente</th>
+              <th scope="col">Tipo de crédito</th>
+              <th scope="col">Voucher</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let payment of paymentsHistory.detail.transactionsData;
+                let i = index
+              "
+            >
+              <td scope="row">{{ payment.fecha_transaccion }}</td>
+              <td>{{ payment.numAutorizacion }}</td>
+              <td>{{ payment.numReferencia }}</td>
+              <td>{{ payment.descripcion }}</td>
+              <td>{{ payment.estado_transaccion }}</td>
+              <td>{{ payment.monto }}</td>
+              <td>{{ payment.numero_telefonico_cliente }}</td>
+              <td>{{ payment.tipoCredito }}</td>
+              <td>{{ payment.voucher }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <ng-template #loadingContent>
+      <div class="loading-spinner">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

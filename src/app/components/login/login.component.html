@@ -1,0 +1,29 @@
+<style>
+    /* Optional: Add some styling to the form */
+    body {
+        background-color: #f8f9fa;
+    }
+    .custom-form {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
+<div class="container-fluid d-flex align-items-center justify-content-center" style="min-height: 100vh; width:100%;">
+    <div class="custom-form">
+        <h1 class="mb-4 text-center ">Login</h1>
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+            <!-- Your form content goes here -->
+            <div class="mb-3">
+                <label for="username-input" class="form-label">Username</label>
+                <input formControlName="username" type="text" class="form-control" id="username-input">
+            </div>
+            <div class="mb-3">
+                <label for="password-input" class="form-label">Password</label>
+                <input formControlName="password" class="form-control" type="password" id="password-input" rows="3">
+            </div>
+            <button [disabled]="!loginForm.valid" type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+</div>

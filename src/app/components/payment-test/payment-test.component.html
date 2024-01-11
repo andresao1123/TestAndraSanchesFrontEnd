@@ -1,0 +1,197 @@
+<style>
+  /* Optional: Add some styling to the form */
+  body {
+    background-color: #f8f9fa;
+  }
+  .custom-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+</style>
+<div
+  class="container-fluid d-flex align-items-center justify-content-center"
+  style="min-height: 100vh; max-width: 1200px; margin: 0 auto"
+>
+  <div class="custom-form">
+    <h1 class="mb-4 text-center">Formulario de pago</h1>
+    <form [formGroup]="paymentForm" (ngSubmit)="callToApi()">
+      <!-- Your form content goes here -->
+      <div class="mb-3">
+        <label for="uame-input" class="form-label">Nombre</label>
+        <input
+          formControlName="name"
+          type="text"
+          class="form-control"
+          id="name-input"
+        />
+      </div>
+      <div
+        *ngIf="
+          paymentForm.get('name')?.invalid && paymentForm.get('name')?.touched
+        "
+      >
+        <span class="text-danger">
+          <!-- Check which validation failed -->
+          <span *ngIf="paymentForm.get('name')?.invalid"
+            >El nombre es requerido.</span
+          >
+        </span>
+      </div>
+      <div class="mb-3">
+        <label for="phone-input" class="form-label">Telefono</label>
+        <input
+          formControlName="phoneNumber"
+          (keypress)="slideNumber_keyFilter($event)"
+          maxlength="10"
+          class="form-control"
+          type="tel"
+          id="phone-input"
+          rows="3"
+        />
+      </div>
+      <div
+        *ngIf="
+          paymentForm.get('phoneNumber')?.invalid &&
+          paymentForm.get('phoneNumber')?.touched
+        "
+      >
+        <span class="text-danger">
+          <!-- Check which validation failed -->
+          <span *ngIf="paymentForm.get('phoneNumber')?.errors?.['required']"
+            >El teléfono es requerido.</span
+          >
+          <span
+            *ngIf="paymentForm.get('phoneNumber')?.errors?.['exactLengthValidator']"
+            >El teléfono debe tener exactamente 10 dígitos.</span
+          >
+          <span *ngIf="paymentForm.get('phoneNumber')?.errors?.['pattern']"
+            >El teléfono debe comenzar con '09'.</span
+          >
+        </span>
+      </div>
+      <div class="mb-3">
+        <label for="direction-input" class="form-label"
+          >Direccion de la persona</label
+        >
+        <textarea
+          formControlName="direction"
+          class="form-control"
+          type="text"
+          id="direction-input"
+          rows="3"
+        ></textarea>
+      </div>
+      <div
+        *ngIf="
+          paymentForm.get('direction')?.invalid &&
+          paymentForm.get('direction')?.touched
+        "
+      >
+        <span class="text-danger">
+          <!-- Check which validation failed -->
+          <span *ngIf="paymentForm.get('direction')?.invalid"
+            >La dirección es requerida.</span
+          >
+        </span>
+      </div>
+      <div class="mb-3">
+        <label for="email-input" class="form-label">Correo electrónico</label>
+        <input
+          formControlName="email"
+          placeholder="name@example.com"
+          class="form-control"
+          type="email"
+          id="email-input"
+          rows="3"
+        />
+      </div>
+      <div
+        *ngIf="
+          paymentForm.get('email')?.invalid && paymentForm.get('email')?.touched
+        "
+      >
+        <span class="text-danger">
+          <!-- Check which validation failed -->
+          <span *ngIf="paymentForm.get('email')?.errors?.['required']"
+            >El correo electrónico es requerido.</span
+          >
+          <span *ngIf="paymentForm.get('email')?.errors?.['email']"
+            >Escriba un mail valido.</span
+          >
+        </span>
+      </div>
+      <div class="mb-3">
+        <label for="value-input" class="form-label"
+          >Valor de pago (use el punto como decimal)</label
+        >
+        <input
+          formControlName="value"
+          (keypress)="slideNumberDecimal_keyFilter($event)"
+          class="form-control"
+          type="text"
+          id="value-input"
+          rows="3"
+        />
+      </div>
+      <div
+        *ngIf="
+          paymentForm.get('value')?.invalid && paymentForm.get('value')?.touched
+        "
+      >
+        <span class="text-danger">
+          <!-- Check which validation failed -->
+          <span *ngIf="paymentForm.get('value')?.errors?.['required']"
+            >El valor de la compra es requerida.</span
+          >
+        </span>
+      </div>
+      <div class="mb-3">
+        <label for="documentId-input" class="form-label"
+          >Cédula de identidad</label
+        >
+        <input
+          formControlName="documentId"
+          (keypress)="slideNumber_keyFilter($event)"
+          class="form-control"
+          type="text"
+          maxlength="10"
+          id="documentId-input"
+          rows="3"
+        />
+      </div>
+      <div
+        *ngIf="
+          paymentForm.get('documentId')?.invalid &&
+          paymentForm.get('documentId')?.touched
+        "
+      >
+        <span class="text-danger">
+          <!-- Check which validation failed -->
+          <span *ngIf="paymentForm.get('documentId')?.errors?.['required']"
+            >La cédula es requerida.</span
+          >
+          <span
+            *ngIf="paymentForm.get('documentId')?.errors?.['exactLengthValidator']"
+            >La cedula debe tener exactamente 10 dígitos.</span
+          >
+          <span *ngIf="paymentForm.get('documentId')?.hasError('invalidaEcuadorianDocumentId')">
+            La cedula ingresada no es válida.
+          </span>
+        </span>
+      </div>
+      <div id="modalPaybox"></div>
+
+      <div class="d-flex justify-content-center">
+        <button
+          [disabled]="!paymentForm.valid"
+          id="pay"
+          class="PagoPluxButton"
+          type="submit"
+        ></button>
+        <!-- <button [disabled]="!paymentForm.valid" type="submit" class="btn btn-primary">Enviar</button> -->
+      </div>
+    </form>
+  </div>
+</div>

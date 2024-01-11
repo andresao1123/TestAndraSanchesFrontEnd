@@ -1,0 +1,15 @@
+.PagoPluxButton {
+  /* display: none; */
+  background-color: #fafafa;
+  right: 80px;
+  /* position: fixed; */
+  background: url('../../../assets/images/pagar.png')
+    no-repeat center center !important;
+  height: 96px;
+  width: 215px;
+
+  border: none;
+  cursor: pointer;
+  background-size: contain !important;
+  outline: 0;
+}

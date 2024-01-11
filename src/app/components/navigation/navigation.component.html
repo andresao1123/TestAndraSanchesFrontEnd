@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+  <div class="container-fluid">
+    <a routerLink="/home" class="navbar-brand text-white"
+      >Payment Test
+      <span>Home</span>
+    </a>
+
+    <ng-container *ngIf="isLoggedIn; else showLogin">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a
+              class="nav-link active text-white fw-bolder "
+              routerLinkActive="active-link"
+              routerLink="/paymentForm"
+              >Payment form</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <button
+        class="btn btn-primary"
+        routerLinkActive="active-link"
+        routerLink=""
+        (click)="logout()"
+        type="submit"
+      >
+        <span>Log out</span>
+      </button>
+    </ng-container>
+
+    <ng-template #showLogin>
+      <button
+        class="btn btn-primary"
+        routerLinkActive="active-link"
+        routerLink="/login"
+        type="submit"
+      >
+        <span>Login</span>
+      </button>
+    </ng-template>
+  </div>
+</nav>
