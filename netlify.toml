@@ -3,7 +3,7 @@
   publish = "dist/payment-test/browser"
 
 [[redirects]]
-  from = "/api/*"
+  from = "/*"
   to = "http://64.23.134.60:3000/:splat"
-  status = 200
+  status = 301
   force = true
