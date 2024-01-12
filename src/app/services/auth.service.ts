@@ -7,12 +7,14 @@ import { User } from '../models/User';
 import { ErrorHandlerServiceService } from './error-handler-service.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { NavigationComponent } from '../components/navigation/navigation.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = environment.appModeProd ? environment.apiUrl : environment.apiUrlDev;
+  
 
   isUserLoggedIn$ = new BehaviorSubject<boolean>(false);
   userId!: Pick<User, 'id'>;
@@ -75,6 +77,11 @@ export class AuthService {
       })
     );
   }
+
+  get isLoggedIn() {
+    return this.isUserLoggedIn$.asObservable();
+  }
+
   logout(): void {
     this.clearAllTokens();
     // Clear authentication-related information
@@ -82,6 +89,7 @@ export class AuthService {
 
     // Update application state
     this.isUserLoggedIn$.next(false);
+
 
     // Navigate to the login page or another appropriate route
     this.router.navigate(['home']);

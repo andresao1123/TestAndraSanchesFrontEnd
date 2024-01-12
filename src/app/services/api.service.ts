@@ -17,7 +17,7 @@ interface ApiResponse {
 })
 
 export class ApiService {
-  private url = environment.apiUrl;
+  private url = environment.appModeProd ? environment.apiUrl : environment.apiUrlDev;
 
   httpOptions: { headers: HttpHeaders } = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),

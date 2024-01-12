@@ -18,13 +18,14 @@ export class NavigationComponent implements OnInit {
     // Subscribe to the isUserLoggedIn$ observable
     const token = localStorage.getItem('token');
     if (token) {
-      this.authService.isUserLoggedIn$.next(true);
-      this.authService.isUserLoggedIn$.subscribe((loggedIn) => {
-        this.isLoggedIn = loggedIn;
-      });
+      this.isLoggedIn = true;
     }
   }
 
+  getIsLoggedIn(){
+    console.log(this.authService.isUserLoggedIn$.getValue())
+    return this.authService.isUserLoggedIn$.getValue();
+  }
   
 
   logout() {
