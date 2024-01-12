@@ -33,7 +33,7 @@ export class AuthService {
     
     return this.http
       .post<{ token: string; userId: Pick<User, 'id'> }>(
-        `64.23.134.60:3000/auth/login`,
+        `${this.url}/auth/login`,
         { name, password },
         this.httpOptions
       )
