@@ -20,6 +20,7 @@ import { HomeComponent } from './components/home/home.component';
 import { PaymentTestComponent } from './components/payment-test/payment-test.component';
 import { ResultTableComponent } from './components/result-table/result-table.component'
 import { AuthGuard } from './auth.guard';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { AuthGuard } from './auth.guard';
     HomeComponent,
     PaymentTestComponent,
     ResultTableComponent,
+    FooterComponent,
   ],
   imports: [
     HttpClientModule,
