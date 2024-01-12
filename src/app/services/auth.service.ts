@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  private url = environment.apiUrl;
+  private url =  environment.apiUrl;
 
   isUserLoggedIn$ = new BehaviorSubject<boolean>(false);
   userId!: Pick<User, 'id'>;
@@ -30,48 +30,35 @@ export class AuthService {
     name: Pick<User, 'name'>,
     password: Pick<User, 'password'>
   ): Observable<{ token: string; userId: Pick<User, 'id'> }> {
-    return new Observable<{ token: string; userId: Pick<User, 'id'> }>(
-      (observer) => {
-        const xhr = new XMLHttpRequest();
-
-        xhr.open('POST', `${this.url}/auth/login`, true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-              const tokenObject = JSON.parse(xhr.responseText);
-              observer.next(tokenObject);
-              observer.complete();
-            } else {
-              observer.error(xhr.statusText);
-            }
-          }
-        };
-
-        xhr.send(JSON.stringify({ name, password }));
-      }
-    ).pipe(
-      first(),
-      tap((tokenObject: { token: string; userId: Pick<User, 'id'> }) => {
-        this.userId = tokenObject.userId;
-        localStorage.setItem('token', tokenObject.token);
-        this.isUserLoggedIn$.next(true);
-        this.router.navigate(['paymentForm']);
-      }),
-      catchError(
-        this.errorHadlerService.handleError<{
-          token: string;
-          userId: Pick<User, 'id'>;
-        }>('login')
+    
+    return this.http
+      .post<{ token: string; userId: Pick<User, 'id'> }>(
+        `${this.url}/auth/login`,
+        { name, password },
+        this.httpOptions
       )
-    );
+      .pipe(
+        first(),
+        tap((tokenObject: { token: string; userId: Pick<User, 'id'> }) => {
+          this.userId = tokenObject.userId;
+          localStorage.setItem('token', tokenObject.token);
+          this.isUserLoggedIn$.next(true);
+          this.router.navigate(['paymentForm']);
+        }),
+        catchError(
+          this.errorHadlerService.handleError<{
+            token: string;
+            userId: Pick<User, 'id'>;
+          }>('login')
+        )
+      );
+    
   }
   logout(): void {
     this.clearAllTokens();
     // Clear authentication-related information
     localStorage.removeItem('token');
-
+    
     // Update application state
     this.isUserLoggedIn$.next(false);
 
